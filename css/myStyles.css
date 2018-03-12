@@ -1,0 +1,157 @@
+/* main elements */
+html,
+body,
+.container {
+  width: 100%;
+  margin: auto;
+}
+
+.container {
+  font-family: Dosis, sans-serif;
+  min-width: 300px;
+  display: flex;
+  flex-direction: row;
+  max-width: 1270px;
+}
+
+h1 {
+  font-family: 'Short Stack', cursive;
+  margin: 0.5em;
+}
+
+article {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 1em;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+}
+
+footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+span {
+  white-space: pre;
+  margin: 0 15px;
+}
+
+/* line stylization */
+hr {
+  height: 12px;
+  border: 0;
+  margin: 0;
+  box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* elements of bottom 3 or 2 or 1 columns */
+.board {
+  width: 90%;
+  background-color: yellow;
+  display: flex;
+  flex-flow: wrap;
+  margin: 0 5%;
+}
+
+/* flex 3 columns */
+.cart {
+  margin: 2%;
+  width: 21%;
+  min-height: 50px;
+  background-color: pink;
+}
+
+//* image on header */
+.u-sign {
+  width: 96px;
+  height: 96px;
+}
+
+/* center */
+#game {
+  margin: 15px;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#canvas {
+  background-color: white;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* breakpoints */
+
+/* change to 2 columns */
+@media screen and (max-width: 915px) {
+  .box-feature {
+    width: 48%;
+  }
+}
+
+/* hide the menu show hamburger */
+@media screen and (max-width: 765px) {
+  aside {
+    position: fixed;
+    left: -140px;
+  }
+  .hamburger {
+    display: block;
+  }
+}
+
+/* change to 1 column */
+@media screen and (max-width: 550px) {
+  .box-feature {
+    width: 97%;
+  }
+  /* shorten the subtitles */
+  .full {
+    display: none;
+  }
+  .short {
+    display: block;
+  }
+}
+
+/* shorten the subtitles */
+@media screen and (max-width: 400px) {
+  .short {
+    display: none;
+  }
+  .mini {
+    display: block;
+  }
+}
+
+/* animations */
+@keyframes change-shape {
+    0% { transform: rotate3d(1, 0, 0, 0deg); background-color: #02b3e4;}
+    25% { transform: rotate3d(3, 2, 0, 90deg); background-color: yellow;}
+    50% { transform: rotate3d(1, 2, 0.5, 180deg); background-color: red;}
+    75% { transform: rotate3d(2, 1, 3, 270deg); background-color: purple;}
+    100% { transform: rotate3d(0, 0, 0, 360deg); background-color: #02b3e4;}
+}
+
+@keyframes fade-out {
+  from { opacity: 1;}
+  to { opacity: 0;}
+}
+
+@keyframes fade-in {
+  from { opacity: 0;}
+  to { opacity: 1;}
+}
