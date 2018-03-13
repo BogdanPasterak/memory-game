@@ -14,50 +14,47 @@
 <body>
   <div class="container">
     <!-- main part of the page -->
-    <article>
-      <!-- heading -->
-      <header>
-        <h1>Matching Game</h1>
-        <hr>
-      </header>
-      <div class="results">
-        <span>***** <strong id="moves">0</strong> Moves</span>
-        </span>
-        <button type="button">Restart</button>
-        <span>Time: <strong id="time">0:00</strong></span>
-      </div>
-      <!-- main part of the page -->
-      <!-- three responsive blocks at the bottom -->
-      <div class="board">
-        <div class="cart"><img src="img/fruti01.png"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-        <div class="cart"></div>
-      </div> <!-- end of board -->
-      <footer>
-        <p>
-          <span><a href="mailto:bogdanpasterak@gmail.com">Bogdan Pasterak</a></span>
-          <span>&copy; 2018</span>
-        </p>
-        <p>
-          <span><a href="https://github.com/BogdanPasterak" target="_blank">GitHub <i class="fab fa-github"></i></a></span>
-          <span><a href="https://www.linkedin.com/in/bogdan-pasterak-54b0b514a/" target="_blank">Linked <i class="fab fa-linkedin-in"></i></a></span>
-          <span><a href="https://www.facebook.com/" target="_blank">Facebook <i class="fab fa-facebook-f"></i></a></span>
-        </p>
-      </footer>
-    </article>
+    <!-- heading -->
+    <header class="my-row">
+      <h1>Matching Game</h1>
+    </header>
+    <div class="my-row">
+      <hr>
+    </div>
+    <div class="my-row">
+      <select id="number-card">
+        <option value="2">Two cards</option>
+        <option value="3">Three cards</option>
+        <option value="4">Four cards</option>
+      </select>
+      <button type="button">Restart</button>
+      <select>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+      </select>
+    </div>
+    <div class="my-row">
+      <span><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i> <strong id="moves">0</strong> Moves</span>
+      <span>Time: <strong id="time">0:00</strong></span>
+    </div>
+    <!-- board of game build dynamically -->
+    <div class="board">
+    </div>
+    <div class="audience my-row">
+    </div>
+    <footer class="my-row">
+      <p>
+        <span><a href="mailto:bogdanpasterak@gmail.com">Bogdan Pasterak</a></span>
+        <span>&copy; 2018</span>
+      </p>
+      <p>
+        <span><a href="https://github.com/BogdanPasterak" target="_blank">GitHub <i class="fab fa-github"></i></a></span>
+        <span><a href="https://www.linkedin.com/in/bogdan-pasterak-54b0b514a/" target="_blank">Linked <i class="fab fa-linkedin-in"></i></a></span>
+        <span><a href="https://www.facebook.com/" target="_blank">Facebook <i class="fab fa-facebook-f"></i></a></span>
+      </p>
+    </footer>
   </div> <!-- end of container -->
   <!-- my scripts -->
   <script src="js/myScrypt.js"></script>
