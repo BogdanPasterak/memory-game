@@ -11,9 +11,12 @@ $(function() {
   const board = $('.board')[0];
 
   calibrationCards();
+
   $( window ).resize(function() {
     calibrationCards();
   });
+
+  choiceCouples();
 
   /*
   let nr;
@@ -43,14 +46,28 @@ const calibrationCards = () => {
       $('footer')[0].before(playground);
     }
   }
-
-
-
 };
 
-const dothis = () => {
-  board = $('.board')[0];
-  //console.log(board);
+const choiceCouples = () => {
+  stakes = $('#stakes');
+  couples = parseInt($('#couples').val());
+  
+  $(stakes).html('');
+
+  for (let i = couples * 2; i < 25; i += couples) {
+    $(stakes).append('<option value="' + i + '">' + i + ' cards</option>')
+  }  
+
+  $(stakes).val('12');
+
+  $(stakes).trigger("change");
+}
+
+const choiceStakes = () => {
+  stakes = parseInt($('#stakes').val());
+  console.log(stakes);
+
+
 }
 // TODO: The first is a bit transformed using css keyframes
 

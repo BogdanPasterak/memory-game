@@ -9,6 +9,7 @@ body,
 
 .container {
   font-family: 'Fredericka the Great', cursive;
+  font-weight: bold;
   min-width: 300px;
   max-width: 1270px;
   display: flex;
@@ -99,6 +100,13 @@ footer span {
 
 img {
   width: 100%;
+}
+
+button,
+select,
+option {
+  font-family: 'Fredericka the Great', cursive;
+  font-weight: bold;
 }
 
 /* line stylization */
