@@ -8,13 +8,32 @@ body,
 }
 
 .container {
-  font-family: Dosis, sans-serif;
-  min-width: 310px;
+  font-family: 'Fredericka the Great', cursive;
+  min-width: 300px;
   max-width: 1270px;
   display: flex;
+  flex-flow: row;
+  width: 98%;
+  height: 98%;
+  padding: 1%;
+}
+
+.my-col-left {
+  width: 96%;
+  padding: 10px 2%;
+  display: flex;
+  flex: 0 1 auto;
   flex-flow: column;
-  width: 94%;
-  padding: 0 3%;
+  background-color: #add;
+  justify-content: space-between;
+}
+
+.my-col-right {
+  width: 0%;
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: column;
+  background-color: #dda;
 }
 
 .my-row {
@@ -27,7 +46,6 @@ body,
 }
 
 h1 {
-  font-family: 'Short Stack', cursive;
   margin: auto;
 }
 
