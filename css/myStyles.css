@@ -45,8 +45,34 @@ body,
   width: 100%;
 }
 
+.playground {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: column;
+  width: 100%;
+  background-color: yellow;
+}
+
+.audience {
+  height: 160px;
+  padding: 0;
+  background: url(../img/audience1200.png) no-repeat center;
+}
+
+/* board io game */
+.board {
+  width: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row;
+}
+
 h1 {
   margin: auto;
+}
+
+p {
+  margin: 0;
 }
 
 footer {
@@ -84,15 +110,6 @@ hr {
   box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* board 4 x 4 */
-.board {
-  width: 100%;
-  background-color: yellow;
-  display: flex;
-  flex: 1 1 auto;
-  flex-flow: row;
-}
-
 /* single cart */
 .cart {
   margin: 1%;
@@ -128,10 +145,18 @@ hr {
 
 /* breakpoints */
 
-/* change to 2 columns */
-@media screen and (max-width: 915px) {
-  .box-feature {
-    width: 48%;
+/* change audience */
+@media screen and (max-width: 820px) {
+  .audience {
+    height: 115px;
+    background: url(../img/audience800.png) no-repeat center;
+  }
+}
+
+@media screen and (max-width: 600px), (max-height: 600px) {
+  .audience {
+    height: 80px;
+    background: url(../img/audience600.png) no-repeat center;
   }
 }
 

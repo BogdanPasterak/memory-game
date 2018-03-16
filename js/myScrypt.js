@@ -7,13 +7,51 @@
 
 // TODO: Registration of the episodes for three colored squares of the menu
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  const squeres = document.getElementsByClassName("squere");
+$(function() {
+  const board = $('.board')[0];
 
-  //squeres[0].addEventListener("click", firstSquere);
+  calibrationCards();
+  $( window ).resize(function() {
+    calibrationCards();
+  });
 
+  /*
+  let nr;
+  for (let i = 0; i < 16; i++) {
+    nr = i - (((i+1) / 4) | 0) + 1;
+    nr = (nr < 10) ? "0" + nr: "" + nr;
+    $(board).append('<p class="card"><img src="img/fruti' + nr + '.png"></p>');
+  }
+  */
 });
 
+const calibrationCards = () => {
+  const playground = $('.playground')[0];
+
+  // putting playground to the side
+  if ($(window).width() > $(window).height() && $(window).width() < 820) {
+   //console.log("weszedł");
+   if ($(playground)[0].parentElement.classList.value == 'my-col-left') {
+      $('.my-col-left')[0].style.width = "36%";
+      $('.my-col-right')[0].style.width = "60%";
+      $('.my-col-right')[0].append(playground);
+    }
+  } else {
+   if ($(playground)[0].parentElement.classList.value == 'my-col-right') {
+      $('.my-col-left')[0].style.width = "96%";
+      $('.my-col-right')[0].style.width = "0";
+      $('footer')[0].before(playground);
+    }
+  }
+
+
+
+};
+
+const dothis = () => {
+  board = $('.board')[0];
+  //console.log(board);
+}
 // TODO: The first is a bit transformed using css keyframes
 
 const firstSquere = () => {

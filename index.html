@@ -24,9 +24,9 @@
       </div>
       <div class="my-row">
         <select id="number-card">
-          <option value="2">Two cards</option>
-          <option value="3">Three cards</option>
-          <option value="4">Four cards</option>
+          <option value="2">Pair</option>
+          <option value="3">Three of kind</option>
+          <option value="4">Four of kind</option>
         </select>
         <button type="button">Restart</button>
         <select>
@@ -40,10 +40,12 @@
         <span><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i> <strong id="moves">0</strong> Moves</span>
         <span>Time: <strong id="time">0:00</strong></span>
       </div>
-      <!-- board of game build dynamically -->
-      <div class="board">
-      </div>
-      <div class="audience my-row">
+      <div class="playground">
+        <!-- board of game build dynamically -->
+        <div class="board">
+        </div>
+        <div class="audience my-row">
+        </div>
       </div>
       <footer class="my-row">
         <p>
@@ -61,6 +63,7 @@
     </div>
   </div> <!-- end of container -->
   <!-- my scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="js/myScrypt.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </body>
