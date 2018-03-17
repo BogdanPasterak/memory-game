@@ -16,13 +16,13 @@
   <div class="container">
     <div class="my-col-left">
       <!-- heading -->
-      <header class="my-row">
+      <header class="my-part">
         <h1>Matching Game</h1>
       </header>
-      <div class="my-row">
+      <div class="my-part">
         <hr>
       </div>
-      <div class="my-row">
+      <div class="my-part">
         <select id="couples" onchange="choiceCouples()">
           <option value="2">Pair</option>
           <option value="3">Three of kind</option>
@@ -30,9 +30,10 @@
         </select>
         <button type="button">Restart</button>
         <select id="stakes" onchange="choiceStakes()">
+          <option value="12">12 cards</option>
         </select>
       </div>
-      <div class="my-row">
+      <div class="my-part">
         <span><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i> <strong id="moves">0</strong> Moves</span>
         <span>Time: <strong id="time">0:00</strong></span>
       </div>
@@ -40,10 +41,10 @@
         <!-- board of game build dynamically -->
         <div class="board">
         </div>
-        <div class="audience my-row">
+        <div class="audience my-part">
         </div>
       </div>
-      <footer class="my-row">
+      <footer class="my-part">
         <p>
           <span><a href="mailto:bogdanpasterak@gmail.com">Bogdan Pasterak</a></span>
           <span>&copy; 2018</span>

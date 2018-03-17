@@ -37,7 +37,7 @@ body,
   background-color: #dda;
 }
 
-.my-row {
+.my-part {
   display: flex;
   flex: 0 1 auto;
   flex-flow: row;
@@ -60,12 +60,37 @@ body,
   background: url(../img/audience1200.png) no-repeat center;
 }
 
-/* board io game */
+/* board of game */
 .board {
   width: 100%;
   display: flex;
   flex: 1 1 auto;
   flex-flow: row;
+  justify-content: space-between;
+}
+
+/* columns or rows inside board */
+.my-col {
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: column;
+  background-color: #daa;
+  justify-content: center;
+}
+
+.my-row {
+  display: flex;
+  flex: 0 1 auto;
+  flex-flow: row;
+  background-color: #daa;
+  justify-content: center;
+}
+
+/* single card */
+.card {
+  margin: 0;
+  padding: 0;
+  background-color: orange;
 }
 
 h1 {
@@ -116,15 +141,6 @@ hr {
   border: 0;
   margin: 0;
   box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
-}
-
-/* single cart */
-.cart {
-  margin: 1%;
-  padding: 2%;
-  width: 19%;
-  min-height: 50px;
-  background-color: pink;
 }
 
 

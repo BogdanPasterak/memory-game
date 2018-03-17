@@ -4,16 +4,40 @@
 * 12/3/2018
 */
 
+const cards = {
+  board: undefined,
+  couples: 0,
+  stakes: 0,
+  col: 0,
+  row: 0,
+  landscape: true
+};
+const location [
+  [2, 3, 3, 3, 3, 4, 3, 3, 4, 4, 5, 5, 5, 6],
+  [2, 3, 2, 3, 4, 4, 4, 4, 4, 5, 5, 5, 6, 6],
+  [0, 0, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6],
+  [0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 6, 5, 6]
+];
 
-// TODO: Registration of the episodes for three colored squares of the menu
+cards.set = function() {
+  this.couples = parseInt($('#couples').val());
+  this.stakes = parseInt($('#stakes').val());
+  this.col = 2 + (this.stakes > 6) + (this.stakes > 12);  // true == 1, false == 0
+  this.row = 2 + (this.stakes > 4) + (this.stakes > 9) + (this.stakes > 16) + (this.stakes > 20);
+  this.landscape = ($(this.board).width() > $(this.board).height());
+};
+
+
+// TODO: Registration of new events and initialization
 
 $(function() {
-  const board = $('.board')[0];
 
-  calibrationCards();
+  cards.board = $('.board')[0];
+
+  reorganization();
 
   $( window ).resize(function() {
-    calibrationCards();
+    reorganization();
   });
 
   choiceCouples();
@@ -28,7 +52,8 @@ $(function() {
   */
 });
 
-const calibrationCards = () => {
+// TODO: resize window
+const reorganization = () => {
   const playground = $('.playground')[0];
 
   // putting playground to the side
@@ -39,36 +64,113 @@ const calibrationCards = () => {
       $('.my-col-right')[0].style.width = "60%";
       $('.my-col-right')[0].append(playground);
     }
-  } else {
+  } else { // or back
    if ($(playground)[0].parentElement.classList.value == 'my-col-right') {
       $('.my-col-left')[0].style.width = "96%";
       $('.my-col-right')[0].style.width = "0";
       $('footer')[0].before(playground);
     }
   }
+
+  $('#stakes').trigger("change");
 };
 
+// TODO: Select function to choose couples
 const choiceCouples = () => {
-  stakes = $('#stakes');
-  couples = parseInt($('#couples').val());
+  const stakesObj = $('#stakes');
+  const couples = parseInt($('#couples').val());
   
-  $(stakes).html('');
+  $(stakesObj).html('');
 
   for (let i = couples * 2; i < 25; i += couples) {
-    $(stakes).append('<option value="' + i + '">' + i + ' cards</option>')
+    $(stakesObj).append('<option value="' + i + '">' + i + ' cards</option>')
   }  
 
-  $(stakes).val('12');
+  $(stakesObj).val('12');
 
-  $(stakes).trigger("change");
+  $(stakesObj).trigger("change");
 }
 
+// TODO: Select function to choose stakes
 const choiceStakes = () => {
-  stakes = parseInt($('#stakes').val());
-  console.log(stakes);
+  cards.set();
+  
+  const rowcol = (cards.landscape) ? 'row' : 'col';
+
+  $(cards.board).html('');
+  
+  // set of cloumns or rows inside board
+  for (let i = 0; i < cards.col; i++) {
+    $(cards.board).append('<div class="my-' + rowcol + '"></div>');
+  }
+  $(cards.board).css('flex-flow', ((cards.landscape) ? 'column' : 'row'));
+
+  // calculate size of cards
+  const cW = cards.board.clientWidth / ((cards.landscape) ? cards.row : cards.col);
+  const cH = cards.board.clientHeight / ((cards.landscape) ? cards.col : cards.row);
+  const quadrat = (cW > cH) ? cH : cW;
+  //console.log(quadrat + "   x=" + cW + "   y=" + cH);
+
+  if (cards.landscape) {
+    $('.my-row').height(quadrat + 'px');
+  } else {
+    $('.my-col').width(quadrat + 'px');
+  }
+
+  
+  // set cards
+  $('.my-col').html('');
+
+  //let x = 1;
+  let who;
+
+  for (let i = 0; i < cards.col; i++){
+    who = '.my-' + rowcol + ':eq(' + i + ')';
+    for (let j = 0; j < i + 2; j++) {
+      const card = $('<div class="card"></div>');
+      $(who).append(card);
+    }
+  }
+
+
+/*
+  $('.my-' + rowcol + ':eq(' + x + ')').append(card);
+  $('.my-' + rowcol + ':eq(' + x + ')').append('<div class="card"></div>');
+  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
+  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
+
+  x=0;
+  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
+  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
+  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
+*/
+  $('.card').width(quadrat + 'px');
+  $('.card').height(quadrat + 'px');
 
 
 }
+
+// TODO: Function for card calibration
+const calibrationCards = () => {
+
+  // calculate size of cards
+  const quadrat = (! cards.landscape) ? $(cards.board).width() / cards.col : $(cards.board).height() / cards.row;
+  console.log(quadrat);
+
+  if (cards.landscape) {
+    $('.my-row').width(quadrat + 'px');
+  } else {
+    $('.my-col').width(quadrat + 'px');
+  }
+}
+
+
+
+
+
+
+
+
 // TODO: The first is a bit transformed using css keyframes
 
 const firstSquere = () => {
