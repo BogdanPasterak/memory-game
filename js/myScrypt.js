@@ -12,7 +12,7 @@ const cards = {
   row: 0,
   landscape: true
 };
-const location [
+const arrangement = [
   [2, 3, 3, 3, 3, 4, 3, 3, 4, 4, 5, 5, 5, 6],
   [2, 3, 2, 3, 4, 4, 4, 4, 4, 5, 5, 5, 6, 6],
   [0, 0, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6],
@@ -123,10 +123,12 @@ const choiceStakes = () => {
 
   //let x = 1;
   let who;
+  const which = (((cards.stakes - 4) / 2) | 0) + (cards.stakes > 8) + (cards.stakes > 14) + (cards.stakes > 20);
 
   for (let i = 0; i < cards.col; i++){
     who = '.my-' + rowcol + ':eq(' + i + ')';
-    for (let j = 0; j < i + 2; j++) {
+    console.log("col=" + i + "  pula=" + cards.stakes + "  nr.puli=" + which + "  l.cart=" + arrangement[i][which]);
+    for (let j = 0; j < arrangement[i][which]; j++) {
       const card = $('<div class="card"></div>');
       $(who).append(card);
     }
