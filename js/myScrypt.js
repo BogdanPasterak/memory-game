@@ -51,7 +51,6 @@ $(function() {
   choiceCouples();
 
 
-  cards.No[1]=7;
 
   /*
   let nr;
@@ -157,7 +156,24 @@ const resetBoard = () => {
 
 // TODO: 
 const drawingCards = () => {
+  let colection = [];
 
+  for (let i = 0; i < 24; i++){
+    cards.No[i] = 0;
+  }
+
+  let rnd;
+  // fill colection
+  for (let i = 1; i <= cards.stakes / cards.couples; i++){
+    for (let j = 0; j < cards.couples; j++){
+      do {
+        rnd = (Math.random() * cards.stakes) | 0;
+      } while (cards.No[rnd] != 0);
+      cards.No[rnd] = i;
+    }
+  }
+  // drawing of the item
+  console.log(cards.No);
 };
 
 
