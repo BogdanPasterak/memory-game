@@ -10,13 +10,16 @@ const cards = {
   stakes: 0,
   col: 0,
   row: 0,
-  landscape: true
+  size: 0,
+  landscape: true,
+  No: Array(24)
 };
+
 const arrangement = [
   [2, 3, 3, 3, 3, 4, 3, 3, 4, 4, 5, 5, 5, 6],
   [2, 3, 2, 3, 4, 4, 4, 4, 4, 5, 5, 5, 6, 6],
-  [0, 0, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6],
-  [0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 6, 5, 6]
+  [0, 0, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6],
+  [0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5, 5, 6]
 ];
 
 cards.set = function() {
@@ -25,6 +28,10 @@ cards.set = function() {
   this.col = 2 + (this.stakes > 6) + (this.stakes > 12);  // true == 1, false == 0
   this.row = 2 + (this.stakes > 4) + (this.stakes > 9) + (this.stakes > 16) + (this.stakes > 20);
   this.landscape = ($(this.board).width() > $(this.board).height());
+  // calculate size of cards
+  const cW = this.board.clientWidth / ((this.landscape) ? this.row : this.col);
+  const cH = this.board.clientHeight / ((this.landscape) ? this.col : this.row);
+  this.size = ((cW > cH) ? cH : cW) | 0;
 };
 
 
@@ -40,7 +47,11 @@ $(function() {
     reorganization();
   });
 
+
   choiceCouples();
+
+
+  cards.No[1]=7;
 
   /*
   let nr;
@@ -80,112 +91,77 @@ const choiceCouples = () => {
   const stakesObj = $('#stakes');
   const couples = parseInt($('#couples').val());
   
+  // clear list stakes
   $(stakesObj).html('');
-
+  // entering new values
   for (let i = couples * 2; i < 25; i += couples) {
     $(stakesObj).append('<option value="' + i + '">' + i + ' cards</option>')
   }  
-
+  // set option 12, is always !
   $(stakesObj).val('12');
-
+  // call to choiceStakes
   $(stakesObj).trigger("change");
-}
+};
 
 // TODO: Select function to choose stakes
 const choiceStakes = () => {
   cards.set();
   
-  const rowcol = (cards.landscape) ? 'row' : 'col';
+  resetBoard();
 
-  $(cards.board).html('');
-  
-  // set of cloumns or rows inside board
-  for (let i = 0; i < cards.col; i++) {
-    $(cards.board).append('<div class="my-' + rowcol + '"></div>');
-  }
-  $(cards.board).css('flex-flow', ((cards.landscape) ? 'column' : 'row'));
-
-  // calculate size of cards
-  const cW = cards.board.clientWidth / ((cards.landscape) ? cards.row : cards.col);
-  const cH = cards.board.clientHeight / ((cards.landscape) ? cards.col : cards.row);
-  const quadrat = (cW > cH) ? cH : cW;
-  //console.log(quadrat + "   x=" + cW + "   y=" + cH);
-
-  if (cards.landscape) {
-    $('.my-row').height(quadrat + 'px');
-  } else {
-    $('.my-col').width(quadrat + 'px');
-  }
-
+  drawingCards();
   
   // set cards
-  $('.my-col').html('');
 
   //let x = 1;
   let who;
   const which = (((cards.stakes - 4) / 2) | 0) + (cards.stakes > 8) + (cards.stakes > 14) + (cards.stakes > 20);
+  let index = 0;
 
   for (let i = 0; i < cards.col; i++){
-    who = '.my-' + rowcol + ':eq(' + i + ')';
-    console.log("col=" + i + "  pula=" + cards.stakes + "  nr.puli=" + which + "  l.cart=" + arrangement[i][which]);
+    who = '.my-' + ((cards.landscape) ? 'row' : 'col') + ':eq(' + i + ')';
+    //console.log("col=" + i + "  pula=" + cards.stakes + "  nr.puli=" + which + "  l.cart=" + arrangement[i][which]);
     for (let j = 0; j < arrangement[i][which]; j++) {
-      const card = $('<div class="card"></div>');
+      const card = $('<div class="card-box">' + '<img src="img/fruti01.png">' + '</div>');
       $(who).append(card);
     }
   }
 
 
-/*
-  $('.my-' + rowcol + ':eq(' + x + ')').append(card);
-  $('.my-' + rowcol + ':eq(' + x + ')').append('<div class="card"></div>');
-  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
-  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
 
-  x=0;
-  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
-  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
-  $('.my-col:eq(' + x + ')').append('<div class="card"></div>');
-*/
-  $('.card').width(quadrat + 'px');
-  $('.card').height(quadrat + 'px');
+  $('.card-box').width(cards.size + 'px');
+  $('.card-box').height(cards.size + 'px');
 
 
-}
-
-// TODO: Function for card calibration
-const calibrationCards = () => {
-
-  // calculate size of cards
-  const quadrat = (! cards.landscape) ? $(cards.board).width() / cards.col : $(cards.board).height() / cards.row;
-  console.log(quadrat);
-
-  if (cards.landscape) {
-    $('.my-row').width(quadrat + 'px');
-  } else {
-    $('.my-col').width(quadrat + 'px');
-  }
-}
-
-
-
-
-
-
-
-
-// TODO: The first is a bit transformed using css keyframes
-
-const firstSquere = () => {
-  const squereOne = document.getElementsByClassName("color-1")[0];
-
-  squereOne.style.animation = "change-shape 5s 1";
-
-  // turn off delayed for reuse
-  setTimeout(function() {
-    squereOne.removeAttribute("style");
-    hideMenu();
-  }, 5000);
 };
+
+// TODO: Function for redrawing the board
+const resetBoard = () => {
+  // clear board
+  $(cards.board).html('');
+  
+  // set of cloumns or rows inside board
+  for (let i = 0; i < cards.col; i++) {
+    $(cards.board).append('<div class="my-' + ((cards.landscape) ? 'row' : 'col') + '"></div>');
+  }
+  // set their  float
+  $(cards.board).css('flex-flow', ((cards.landscape) ? 'column' : 'row'));
+  // and size
+  if (cards.landscape) {
+    $('.my-row').height(cards.size + 'px');
+  } else {
+    $('.my-col').width(cards.size + 'px');
+  }
+
+};
+
+// TODO: 
+const drawingCards = () => {
+
+};
+
+
+
 
 
 // TODO: The second moves divs in the div feature
