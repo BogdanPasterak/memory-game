@@ -12,7 +12,9 @@ const cards = {
   row: 0,
   size: 0,
   landscape: true,
-  No: Array(24)
+  No: Array(24),
+  flip: Array(24),
+  search: Array(3)
 };
 
 const arrangement = [
@@ -51,15 +53,6 @@ $(function() {
   choiceCouples();
 
 
-
-  /*
-  let nr;
-  for (let i = 0; i < 16; i++) {
-    nr = i - (((i+1) / 4) | 0) + 1;
-    nr = (nr < 10) ? "0" + nr: "" + nr;
-    $(board).append('<p class="card"><img src="img/fruti' + nr + '.png"></p>');
-  }
-  */
 });
 
 // TODO: resize window
@@ -82,7 +75,12 @@ const reorganization = () => {
     }
   }
 
-  $('#stakes').trigger("change");
+  cards.set();
+  
+  resetBoard();
+
+  setingCards();
+
 };
 
 // TODO: Select function to choose couples
@@ -110,26 +108,10 @@ const choiceStakes = () => {
 
   drawingCards();
   
+  setingCards();
   // set cards
 
   //let x = 1;
-  let who;
-  const which = (((cards.stakes - 4) / 2) | 0) + (cards.stakes > 8) + (cards.stakes > 14) + (cards.stakes > 20);
-  let index = 0;
-
-  for (let i = 0; i < cards.col; i++){
-    who = '.my-' + ((cards.landscape) ? 'row' : 'col') + ':eq(' + i + ')';
-    //console.log("col=" + i + "  pula=" + cards.stakes + "  nr.puli=" + which + "  l.cart=" + arrangement[i][which]);
-    for (let j = 0; j < arrangement[i][which]; j++) {
-      const card = $('<div class="card-box">' + '<img src="img/fruti01.png">' + '</div>');
-      $(who).append(card);
-    }
-  }
-
-
-
-  $('.card-box').width(cards.size + 'px');
-  $('.card-box').height(cards.size + 'px');
 
 
 };
@@ -176,41 +158,67 @@ const drawingCards = () => {
   console.log(cards.No);
 };
 
+// TODO: 
+const setingCards = () => {
+
+  // to which row or column to add
+  let who; 
+  // index in the pattern
+  const which = (((cards.stakes - 4) / 2) | 0) + (cards.stakes > 8) + (cards.stakes > 14) + (cards.stakes > 20);
+  // index of card
+  let index = 0;
+
+  for (let i = 0; i < cards.col; i++){
+    who = '.my-' + ((cards.landscape) ? 'row' : 'col') + ':eq(' + i + ')';
+    for (let j = 0; j < arrangement[i][which]; j++) {
+      let card = $(buildCard(cards.No[index], index));
+      // adding click event with prevent dragable
+      $(card).children().on("mouseup mousedown", function(event) {
+        event.preventDefault();
+        if (event.type == "mouseup"){
+          flipp(this);
+        }
+      });
+
+      $(who).append(card);
+      index++
+    }
+  }
+
+  $('.card-box').width(cards.size + 'px');
+  $('.card-box').height(cards.size + 'px');
+
+};
 
 
+const flipp = (sender) => {
+  $(sender).toggleClass('flipped');
+  console.log(parseInt($(sender).attr('id')));
 
-
-// TODO: The second moves divs in the div feature
-
-const secondSquere = () => {
-  const boxFeature = document.getElementsByClassName("box-feature")[0];
-  const feature = document.getElementsByClassName("feature")[0];
-  // My challenge FadeOut and FadeIn without jQuery !!!
-  boxFeature.style.animation = "fade-out 1s 1";
-
-  // switching from position 1 to the end with smooth blanking
-  setTimeout(function() {
-    boxFeature.style.display = "none";
-    feature.appendChild(boxFeature);
-    boxFeature.style.animation = "fade-in 1s 1";
-    boxFeature.style.display = "block";
-  }, 900);
-
-  // turn off delayed for reuse
-  setTimeout(function() {
-    boxFeature.removeAttribute("style");
-  }, 1800);
-
-  hideMenu();
 };
 
 
 // TODO: The third creates an additional snakes on the canvas
 
-const thirdSquere = () => {
-  snake = new Snake();
-  snake.start();
-  hideMenu();
+const buildCard = (pattern, index) => {
+  pattern = ((pattern < 10) ? '0' : '') + pattern;
+  index = ((index < 10) ? '0' : '') + index;
+  let card = '';
+
+  card += '<div class="card-box">';
+  card += '<div class="card" id="' + index + '">';
+
+  card += '<figure class="back">';
+  card += '<img src="img/bowl.png">';
+  card += '</figure>';
+
+  card += '<figure class="front">';
+  card += '<img src="img/fruti' + pattern + '.png">';
+  card += '</figure>';
+  
+  card += '</div>'; // end card
+  card += '</div>'; // end card-box
+  return card;
 };
 
 
