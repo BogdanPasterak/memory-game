@@ -11,10 +11,13 @@ const cards = {
   col: 0,
   row: 0,
   size: 0,
+  moves: 0,
+  time: 0,
+  intervalID: undefined,
   landscape: true,
   No: Array(24),
   flipp: Array(24),
-  search: [-1, -1, -1]
+  search: Array(3)
 };
 
 const arrangement = [
@@ -104,17 +107,18 @@ const choiceCouples = () => {
 const choiceStakes = () => {
   cards.set();
   
+  restart();
+};
+
+const restart = () => {
+
   resetBoard();
 
   drawingCards();
   
   setingCards();
-  // set cards
-
-  //let x = 1;
-
-
 };
+
 
 // TODO: Function for redrawing the board
 const resetBoard = () => {
@@ -138,14 +142,25 @@ const resetBoard = () => {
 
 // TODO: drawing cards
 const drawingCards = () => {
-  let colection = [];
+  let rnd;
 
   for (let i = 0; i < 24; i++){
     cards.No[i] = 0;
     cards.flipp[i] = false;
   }
+  cards.search[2] = -1;          
+  cards.search[1] = -1;          
+  cards.search[0] = -1;
+  cards.moves = 0;
+  cards.time = 0;
+  // stop clock
+  if (cards.intervalID != undefined) {
+    clearInterval(cards.intervalID);
+    cards.intervalID = undefined;
+  }
+  $('#moves').html('0');
+  $('#time').html('0:00');
 
-  let rnd;
   // fill colection
   for (let i = 1; i <= cards.stakes / cards.couples; i++){
     for (let j = 0; j < cards.couples; j++){
@@ -182,10 +197,8 @@ const setingCards = () => {
       index++
     }
   }
-
   $('.card-box').width(cards.size + 'px');
   $('.card-box').height(cards.size + 'px');
-
 };
 
 // TODO: Card rollover function
@@ -197,11 +210,16 @@ const flipp = (sender) => {
   // if I check
   if (front){
     // nastepny ruch
-
+    cards.moves++;
+    $('#moves').html(cards.moves);
     
     $(sender).toggleClass('flipped');
     cards.flipp[index] = front;
-    // zegar stoi --- start
+    // start clock if stoped
+    if (cards.intervalID == undefined ){
+      cards.intervalID = setInterval(addSecond, 1000);
+    }
+
 
     // były juz odkryte -- sprawdz
     if (cards.search[0] >= 0) {
@@ -214,6 +232,12 @@ const flipp = (sender) => {
           cards.search[1] = -1;          
           cards.search[0] = -1;
           if ($('.flipped').length == cards.stakes) {
+            if (cards.intervalID != undefined) {
+              clearInterval(cards.intervalID);
+              cards.intervalID = undefined;
+            }
+
+
             console.log('Koniec');
           }         
         } else {
@@ -296,15 +320,27 @@ const buildCard = (nr) => {
 };
 
 
+const addSecond = () => {
+  let time;
+  let min;
+
+  cards.time++;
+  time = (cards.time / 3600) | 0;
+  min = ((cards.time % 3600) / 60 ) | 0;
+  sec = cards.time % 60;
+
+  if (time == 0) {
+    time = '';
+  } else {
+    time += ':' + ((min < 10) ? '0': '');
+  }
+  time += min + ':' + leadingZero(sec);
+  $('#time').html(time);
+};
+
 // TODO: Two functions to operate the hide-away menu
 
 const leadingZero = (nr) => {
 	return ((nr < 10) ? '0' : '') + nr;
 };
 
-const hideMenu = () => {
-	if (document.documentElement.clientWidth <= 765) {
-		document.getElementsByClassName("hamburger")[0].removeAttribute("style");
-		document.getElementsByTagName("aside")[0].removeAttribute("style");
-	}
-};
