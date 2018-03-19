@@ -13,8 +13,8 @@ const cards = {
   size: 0,
   landscape: true,
   No: Array(24),
-  flip: Array(24),
-  search: Array(3)
+  flipp: Array(24),
+  search: [-1, -1, -1]
 };
 
 const arrangement = [
@@ -136,12 +136,13 @@ const resetBoard = () => {
 
 };
 
-// TODO: 
+// TODO: drawing cards
 const drawingCards = () => {
   let colection = [];
 
   for (let i = 0; i < 24; i++){
     cards.No[i] = 0;
+    cards.flipp[i] = false;
   }
 
   let rnd;
@@ -154,13 +155,10 @@ const drawingCards = () => {
       cards.No[rnd] = i;
     }
   }
-  // drawing of the item
-  console.log(cards.No);
 };
 
 // TODO: 
 const setingCards = () => {
-
   // to which row or column to add
   let who; 
   // index in the pattern
@@ -171,7 +169,7 @@ const setingCards = () => {
   for (let i = 0; i < cards.col; i++){
     who = '.my-' + ((cards.landscape) ? 'row' : 'col') + ':eq(' + i + ')';
     for (let j = 0; j < arrangement[i][which]; j++) {
-      let card = $(buildCard(cards.No[index], index));
+      let card = $(buildCard(index));
       // adding click event with prevent dragable
       $(card).children().on("mouseup mousedown", function(event) {
         event.preventDefault();
@@ -179,7 +177,7 @@ const setingCards = () => {
           flipp(this);
         }
       });
-
+      // set card
       $(who).append(card);
       index++
     }
@@ -190,23 +188,99 @@ const setingCards = () => {
 
 };
 
-
+// TODO: Card rollover function
 const flipp = (sender) => {
-  $(sender).toggleClass('flipped');
-  console.log(parseInt($(sender).attr('id')));
+  const index = parseInt($(sender).attr('id'));
+  const front = ! cards.flipp[index];
+  let id0, id1, id2;
+
+  // if I check
+  if (front){
+    // nastepny ruch
+
+    
+    $(sender).toggleClass('flipped');
+    cards.flipp[index] = front;
+    // zegar stoi --- start
+
+    // były juz odkryte -- sprawdz
+    if (cards.search[0] >= 0) {
+      // jesli trafiona
+      if (cards.No[index] == cards.No[cards.search[0]]) {
+        // chy komplet
+        if (cards.couples == 2 || (cards.couples == 3 && cards.search[1] >= 0) || (cards.couples == 4 && cards.search[1] >= 0 && cards.search[2] >= 0)) {
+          // jak tak usun sprawdszanie
+          cards.search[2] = -1;          
+          cards.search[1] = -1;          
+          cards.search[0] = -1;
+          if ($('.flipped').length == cards.stakes) {
+            console.log('Koniec');
+          }         
+        } else {
+        // nie komplet (2 lub 3) dopisz do odkrytych
+          if (cards.search[1] == -1) {
+            // ustaw druga
+            cards.search[1] = index;
+          } else {
+            // ustaw trzecia
+            cards.search[2] = index;
+          }
+        }
+      } else {
+      // nie trafiona
+        // czy jest 2 i 3
+        id0 = leadingZero(cards.search[0]);
+        if (cards.couples > 2 && cards.search[1] >= 0) {
+          id1 = leadingZero(cards.search[1]);
+        }
+        if (cards.couples == 4 && cards.search[2] >= 0) {
+          id2 = leadingZero(cards.search[2]);
+        }
+        // odwroc spowrotem
+        setTimeout(function() {
+          $(sender).toggleClass('flipped');
+          $('#' + id0).toggleClass('flipped');
+          if (id1 != undefined) {
+            $('#' + id1).toggleClass('flipped');
+          }        
+          if (id2 != undefined) {
+            $('#' + id2).toggleClass('flipped');
+          }        
+        }, 600);
+        // odznacz i wykasuj rejestry
+        cards.flipp[index] = false;
+        cards.flipp[cards.search[0]] = false;
+        cards.search[0] = -1;
+        if (id1 != undefined) {
+          cards.flipp[cards.search[1]] = false;
+          cards.search[1] = -1;
+        }        
+        if (id2 != undefined) {
+          cards.flipp[cards.search[2]] = false;
+          cards.search[2] = -1;
+        }        
+      }
+    // jesli nie zacznij odkrywanaie
+    } else {
+      cards.search[0] = index;
+    }
+  }
 
 };
 
-
-// TODO: The third creates an additional snakes on the canvas
-
-const buildCard = (pattern, index) => {
-  pattern = ((pattern < 10) ? '0' : '') + pattern;
-  index = ((index < 10) ? '0' : '') + index;
+// TODO: Creates a card
+const buildCard = (nr) => {
+  const pattern = leadingZero(cards.No[nr]);
+  const index = ((nr < 10) ? '0' : '') + nr;
   let card = '';
 
   card += '<div class="card-box">';
-  card += '<div class="card" id="' + index + '">';
+  card += '<div class="card';
+  // if it was rotated, turn it
+  if (cards.flipp[nr]){
+    card += ' flipped';
+  }
+  card += '" id="' + index + '">';
 
   card += '<figure class="back">';
   card += '<img src="img/bowl.png">';
@@ -224,9 +298,8 @@ const buildCard = (pattern, index) => {
 
 // TODO: Two functions to operate the hide-away menu
 
-const showMenu = () => {
-	document.getElementsByClassName("hamburger")[0].style.display = "none";
-	document.getElementsByTagName("aside")[0].style.left = "0";
+const leadingZero = (nr) => {
+	return ((nr < 10) ? '0' : '') + nr;
 };
 
 const hideMenu = () => {
