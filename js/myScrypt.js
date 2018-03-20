@@ -160,6 +160,7 @@ const drawingCards = () => {
   }
   $('#moves').html('0');
   $('#time').html('0:00');
+  calcStars();
 
   // fill colection
   for (let i = 1; i <= cards.stakes / cards.couples; i++){
@@ -236,7 +237,7 @@ const flipp = (sender) => {
               clearInterval(cards.intervalID);
               cards.intervalID = undefined;
             }
-
+            calcStars();
 
             console.log('Koniec');
           }         
@@ -321,25 +322,44 @@ const buildCard = (nr) => {
 
 
 const addSecond = () => {
-  let time;
-  let min;
+  let time, min, sec;
 
   cards.time++;
   time = (cards.time / 3600) | 0;
   min = ((cards.time % 3600) / 60 ) | 0;
   sec = cards.time % 60;
 
-  if (time == 0) {
-    time = '';
-  } else {
-    time += ':' + ((min < 10) ? '0': '');
-  }
-  time += min + ':' + leadingZero(sec);
+  time = ((time == 0) ? min : time + ':' + leadingZero(min)) + ':' + leadingZero(sec);
   $('#time').html(time);
+
+  calcStars();
 };
 
-// TODO: Two functions to operate the hide-away menu
+// TODO: Drowing a stars
+const calcStars = (nr) => {
+  const place = $('#stars');
+  let stars;
+  let star;
 
+  // fewer stars if you're too slow
+  stars = (cards.time / cards.moves) | 0;
+  // fewer stars if too many missed ones
+  stars += (cards.moves / (cards.stakes * 1.4)) | 0;
+  stars = 5 - stars;
+
+  $(place).html('');
+  for ( let i = 0; i < 5; i++) {
+    if (stars > 0) {
+      stars--;
+      star = $('<i class="fas fa-star"></i>');
+    } else {
+      star = $('<i class="far fa-star"></i>');
+    }
+    $(place).append(star);
+  }
+};
+
+// TODO: Adds a leading zero
 const leadingZero = (nr) => {
 	return ((nr < 10) ? '0' : '') + nr;
 };
