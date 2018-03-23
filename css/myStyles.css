@@ -18,7 +18,6 @@ body,
   width: 98%;
   height: 97.5%;
   padding: 1%;
-  background-color: #ccc;
   background-image: repeating-radial-gradient(#ccb , #cbc 15%, #bcc 50%);
 }
 
@@ -58,6 +57,7 @@ body,
   height: 160px;
   padding: 0;
   background: url(../img/audience1200.png) no-repeat center;
+  z-index: 10;
 }
 
 /* board of game */
@@ -138,6 +138,7 @@ body,
   transform: rotateY( 180deg );
 }
 
+
 h1 {
   margin: auto;
 }
@@ -189,15 +190,73 @@ hr {
   margin: 0;
   box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
 }
-
-
-
-
-//* image on header */
-.u-sign {
-  width: 96px;
-  height: 96px;
+/* divs for hat*/
+.hat-box {
+  position: absolute;
+  top: 710px;
+  left: 0;
+  pointer-events: none;
 }
+
+.hat-X {
+  position: relative;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  animation-name: moveX;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+}
+
+.hat-Y {
+  position: relative;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  animation-name: moveY0;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+}
+
+.hat {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 70px;  
+  pointer-events: none;
+  background-image: url("../img/hat0.png");
+  background-size: contain;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+}
+
+
+@keyframes moveX0 { to { left: -577px; } }
+@keyframes moveX1 { to { left: -397px; } }
+@keyframes moveX2 { to { left: -181px; } }
+@keyframes moveX3 { to { left: -67px; } }
+@keyframes moveX4 { to { left: -23px; } }
+@keyframes moveX5 { to { left: 31px; } }
+@keyframes moveX6 { to { left: 73px; } }
+@keyframes moveX7 { to { left: 197px; } }
+@keyframes moveX8 { to { left: 401px; } }
+@keyframes moveX9 { to { left: 619px; } }
+
+
+@keyframes moveY0 { 50% { top: -520px; animation-timing-function: ease-in; } }
+@keyframes moveY1 { 50% { top: -440px; animation-timing-function: ease-in; } }
+@keyframes moveY2 { 50% { top: -360px; animation-timing-function: ease-in; } }
+@keyframes moveY3 { 50% { top: -290px; animation-timing-function: ease-in; } }
+@keyframes moveY4 { 50% { top: -230px; animation-timing-function: ease-in; } }
+@keyframes moveY5 { 50% { top: -180px; animation-timing-function: ease-in; } }
+@keyframes moveY6 { 50% { top: -130px; animation-timing-function: ease-in; } }
+
+@keyframes moveR0 { to { transform: rotate(360deg); } }
+@keyframes moveR1 { to { transform: rotate(-360deg); } }
+@keyframes moveR2 { to { transform: rotate(-180deg); } }
+@keyframes moveR3 { to { transform: rotate(180deg); } }
+
 
 /* center */
 #game {

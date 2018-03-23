@@ -17,7 +17,9 @@ const cards = {
   landscape: true,
   No: Array(24),
   flipp: Array(24),
-  search: Array(3)
+  search: Array(3),
+  rectAudience: undefined,
+  rectBoard: undefined
 };
 
 const arrangement = [
@@ -26,6 +28,8 @@ const arrangement = [
   [0, 0, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6],
   [0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5, 5, 6]
 ];
+const moveX = [-577, -397, -181, -67, -23, 31, 73, 197, 401, 619];
+const moveY = [520, 440, 360, 290, 230, 180, 130];
 
 cards.set = function() {
   this.couples = parseInt($('#couples').val());
@@ -56,6 +60,11 @@ $(function() {
   choiceCouples();
 
 
+  //console.log($('.aaa::after'));
+
+  // $('.aaa::after').css( 'background-image', 'url("../img/hat0.png")');
+  // $('.aaa::after').style.backgroundImage = 'url("../img/hat0.png")';
+
 });
 
 // TODO: resize window
@@ -77,6 +86,9 @@ const reorganization = () => {
       $('footer')[0].before(playground);
     }
   }
+
+  cards.rectAudience = $('.audience')[0].getBoundingClientRect();
+  cards.rectBoard = $('.board')[0].getBoundingClientRect();
 
   cards.set();
   
@@ -117,6 +129,8 @@ const restart = () => {
   drawingCards();
   
   setingCards();
+
+  throwHat();
 };
 
 
@@ -361,6 +375,46 @@ const calcStars = (nr) => {
 
 // TODO: Adds a leading zero
 const leadingZero = (nr) => {
-	return ((nr < 10) ? '0' : '') + nr;
+  return ((nr < 10) ? '0' : '') + nr;
 };
 
+// TODO: Adds a leading zero
+const throwHat = () => {
+
+  let hat, box, hatX, hatY;
+  let drowX, drowY, rotate, kind, x, y;
+
+  do {
+    drowX = (Math.random() * 10) | 0;;
+  } while ( cards.rectAudience.width < moveX[drowX] );
+  do {
+    drowY = (Math.random() * 7) | 0;;
+  } while ( cards.rectBoard.height + 150 < moveX[drowX] );
+  rotate = (Math.random() * 4) | 0;
+  kind = (Math.random() * 10) | 0;
+
+  x = (cards.rectAudience.width - Math.abs(moveX[drowX])) * Math.random();
+  x = (x * Math.random() + cards.rectAudience.x + ((moveX[drowX] < 0) ? -moveX[drowX] : 0)) | 0;
+  y = (cards.rectAudience.y + cards.rectAudience.height - 70 - 80 * Math.random()) | 0;
+
+  //console.log('los =' + moveX[drowX] + '  pole=' + cards.rectAudience.width + '  x=' + x);
+
+  box = $('<div class="hat-box" style="left: ' + x + 'px; top: ' + y + 'px;"></div>');
+
+  hatX = $('<div class="hat-X" style="animation-name: moveX' + drowX + ';"></div>');
+  hatY = $('<div class="hat-Y" style="animation-name: moveY' + drowY + ';"></div>');
+
+  hat = $('<div class="hat" style="animation-name: moveR' + rotate + '; background-image: url(\'img/hat' + kind + '.png\');"></div>');
+
+  $(box).append(hatX);
+  $(hatX).append(hatY);
+  $(hatY).append(hat);
+
+
+  setTimeout(function() {
+    $(box).remove();
+  }, 990);
+
+  $('.board').append(box);
+
+};
