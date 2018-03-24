@@ -246,7 +246,14 @@ const flipp = (sender) => {
           cards.search[2] = -1;          
           cards.search[1] = -1;          
           cards.search[0] = -1;
+          // hurra
+          for (let i = 0; i < ((Math.random() * 10) | 0) + 7; i++) {
+            setTimeout(function() {
+              throwHat();
+            },(Math.random() * 1500) | 0);
+          }
           if ($('.flipped').length == cards.stakes) {
+            // jesli wszystkie
             if (cards.intervalID != undefined) {
               clearInterval(cards.intervalID);
               cards.intervalID = undefined;
