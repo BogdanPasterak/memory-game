@@ -249,8 +249,8 @@ hr {
 @keyframes moveY2 { 50% { top: -360px; animation-timing-function: ease-in; } }
 @keyframes moveY3 { 50% { top: -290px; animation-timing-function: ease-in; } }
 @keyframes moveY4 { 50% { top: -230px; animation-timing-function: ease-in; } }
-@keyframes moveY5 { 50% { top: -180px; animation-timing-function: ease-in; } }
-@keyframes moveY6 { 50% { top: -130px; animation-timing-function: ease-in; } }
+@keyframes moveY5 { 50% { top: -170px; animation-timing-function: ease-in; } }
+@keyframes moveY6 { 50% { top: -100px; animation-timing-function: ease-in; } }
 
 @keyframes moveR0 { to { transform: rotate(360deg); } }
 @keyframes moveR1 { to { transform: rotate(-360deg); } }
@@ -282,12 +282,12 @@ hr {
     background: url(../img/audience800.png) no-repeat center;
   }
   .container {
-    font-size: 1em;
+    font-size: 0.9em;
   }
   button,
   select,
   option {
-    font-size: 0.95em;
+    font-size: 0.8em;
   }
 }
 
@@ -298,56 +298,3 @@ hr {
   }
 }
 
-/* hide the menu show hamburger */
-@media screen and (max-width: 765px) {
-  aside {
-    position: fixed;
-    left: -140px;
-  }
-  .hamburger {
-    display: block;
-  }
-}
-
-/* change to 1 column */
-@media screen and (max-width: 550px) {
-  .box-feature {
-    width: 97%;
-  }
-  /* shorten the subtitles */
-  .full {
-    display: none;
-  }
-  .short {
-    display: block;
-  }
-}
-
-/* shorten the subtitles */
-@media screen and (max-width: 400px) {
-  .short {
-    display: none;
-  }
-  .mini {
-    display: block;
-  }
-}
-
-/* animations */
-@keyframes change-shape {
-    0% { transform: rotate3d(1, 0, 0, 0deg); background-color: #02b3e4;}
-    25% { transform: rotate3d(3, 2, 0, 90deg); background-color: yellow;}
-    50% { transform: rotate3d(1, 2, 0.5, 180deg); background-color: red;}
-    75% { transform: rotate3d(2, 1, 3, 270deg); background-color: purple;}
-    100% { transform: rotate3d(0, 0, 0, 360deg); background-color: #02b3e4;}
-}
-
-@keyframes fade-out {
-  from { opacity: 1;}
-  to { opacity: 0;}
-}
-
-@keyframes fade-in {
-  from { opacity: 0;}
-  to { opacity: 1;}
-}

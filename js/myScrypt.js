@@ -14,10 +14,12 @@ const cards = {
   moves: 0,
   time: 0,
   intervalID: undefined,
+  intervalOvations: undefined,
   landscape: true,
   No: Array(24),
   flipp: Array(24),
   search: Array(3),
+  sizeHat: 70,
   rectAudience: undefined,
   rectBoard: undefined
 };
@@ -29,7 +31,7 @@ const arrangement = [
   [0, 0, 0, 0, 0, 0, 3, 4, 4, 4, 5, 5, 5, 6]
 ];
 const moveX = [-577, -397, -181, -67, -23, 31, 73, 197, 401, 619];
-const moveY = [520, 440, 360, 290, 230, 180, 130];
+const moveY = [520, 440, 360, 290, 230, 170, 100];
 
 cards.set = function() {
   this.couples = parseInt($('#couples').val());
@@ -59,12 +61,6 @@ $(function() {
 
   choiceCouples();
 
-
-  //console.log($('.aaa::after'));
-
-  // $('.aaa::after').css( 'background-image', 'url("../img/hat0.png")');
-  // $('.aaa::after').style.backgroundImage = 'url("../img/hat0.png")';
-
 });
 
 // TODO: resize window
@@ -86,6 +82,12 @@ const reorganization = () => {
       $('footer')[0].before(playground);
     }
   }
+  if ($(window).width() < 700 || $(window).height() < 700) {
+    cards.sizeHat = 40;
+  } else {
+    cards.sizeHat = 70;
+  }
+
 
   cards.rectAudience = $('.audience')[0].getBoundingClientRect();
   cards.rectBoard = $('.board')[0].getBoundingClientRect();
@@ -124,13 +126,15 @@ const choiceStakes = () => {
 
 const restart = () => {
 
+  if (cards.intervalOvations != undefined) {
+    clearInterval(cards.intervalOvations);
+    cards.intervalOvations = undefined;
+  }
   resetBoard();
 
   drawingCards();
   
   setingCards();
-
-  throwHat();
 };
 
 
@@ -253,12 +257,16 @@ const flipp = (sender) => {
             },(Math.random() * 1500) | 0);
           }
           if ($('.flipped').length == cards.stakes) {
-            // jesli wszystkie
+            // jesli wszystkie stop zegar
             if (cards.intervalID != undefined) {
               clearInterval(cards.intervalID);
               cards.intervalID = undefined;
             }
             calcStars();
+            // ovations
+            if (cards.intervalOvations == undefined ){
+              cards.intervalOvations = setInterval(ovations, 200);
+           }
 
             console.log('Koniec');
           }         
@@ -304,7 +312,11 @@ const flipp = (sender) => {
         if (id2 != undefined) {
           cards.flipp[cards.search[2]] = false;
           cards.search[2] = -1;
-        }        
+        }    
+        // czasem ktos sie pomyli
+        if (Math.random() < 0.2) {
+          throwHat();
+        }    
       }
     // jesli nie zacznij odkrywanaie
     } else {
@@ -388,21 +400,22 @@ const leadingZero = (nr) => {
 // TODO: Adds a leading zero
 const throwHat = () => {
 
-  let hat, box, hatX, hatY;
+  let hat, box, hatX, hatY, div;
   let drowX, drowY, rotate, kind, x, y;
 
   do {
-    drowX = (Math.random() * 10) | 0;;
-  } while ( cards.rectAudience.width < moveX[drowX] );
+    drowX = (Math.random() * 10) | 0;
+  } while ( cards.rectAudience.width - cards.sizeHat < Math.abs(moveX[drowX]) );
   do {
-    drowY = (Math.random() * 7) | 0;;
-  } while ( cards.rectBoard.height + 150 < moveX[drowX] );
+    drowY = (Math.random() * 7) | 0;
+  } while ( cards.rectAudience.y < moveY[drowY] );
   rotate = (Math.random() * 4) | 0;
   kind = (Math.random() * 10) | 0;
 
-  x = (cards.rectAudience.width - Math.abs(moveX[drowX])) * Math.random();
-  x = (x * Math.random() + cards.rectAudience.x + ((moveX[drowX] < 0) ? -moveX[drowX] : 0)) | 0;
-  y = (cards.rectAudience.y + cards.rectAudience.height - 70 - 80 * Math.random()) | 0;
+  x = (cards.rectAudience.width - Math.abs(moveX[drowX]) - cards.sizeHat) * Math.random();
+  x = (x + cards.rectAudience.x - ((moveX[drowX] < 0) ? moveX[drowX] : 0)) | 0;
+
+  y = (cards.rectAudience.y + cards.rectAudience.height - cards.sizeHat * (1 + Math.random())) | 0;
 
   //console.log('los =' + moveX[drowX] + '  pole=' + cards.rectAudience.width + '  x=' + x);
 
@@ -411,7 +424,13 @@ const throwHat = () => {
   hatX = $('<div class="hat-X" style="animation-name: moveX' + drowX + ';"></div>');
   hatY = $('<div class="hat-Y" style="animation-name: moveY' + drowY + ';"></div>');
 
-  hat = $('<div class="hat" style="animation-name: moveR' + rotate + '; background-image: url(\'img/hat' + kind + '.png\');"></div>');
+  div = '<div class="hat" style="';
+  div += 'width: ' + cards.sizeHat + 'px;';
+  div += 'height: ' + cards.sizeHat + 'px;';
+  div += 'animation-name: moveR' + rotate + ';';
+  div += 'background-image: url(\'img/hat' + kind + '.png\');';
+  div += '"></div>';
+  hat = $(div);
 
   $(box).append(hatX);
   $(hatX).append(hatY);
@@ -422,6 +441,16 @@ const throwHat = () => {
     $(box).remove();
   }, 990);
 
-  $('.board').append(box);
+  $(cards.board).append(box);
+
+};
+
+
+// TODO: Adds a leading zero
+const ovations = () => {
+
+  setTimeout(function() {
+    throwHat();
+  }, (Math.random() * 300) | 0);
 
 };
