@@ -278,12 +278,11 @@ const flipp = (sender) => {
               clearInterval(cards.intervalID);
               cards.intervalID = undefined;
             }
-            // show stars
-            calcStars();
             // ovations !!!
             if (cards.intervalOvations == undefined ){
               cards.intervalOvations = setInterval(ovations, 200);
             }
+            win();
           }         
         } else {
         // not all in the set, enter and search further
@@ -386,19 +385,19 @@ const addSecond = () => {
 
 // TODO: Drowing a stars
 const calcStars = (nr) => {
-  const place = $('#stars');
+  const place = $('.stars');
   let stars;
   let star;
 
-  // fewer stars if you're too slow
-  stars = (cards.time / cards.moves) | 0;
+  // fewer stars if you're too slow ( 2 sec per move)
+  stars = ((cards.time / cards.moves) / 2) | 0;
   // fewer stars if too many missed ones
-  stars += (cards.moves / (cards.stakes * 1.4)) | 0;
-  // max 5
-  stars = 5 - stars;
+  stars += (cards.moves / (cards.stakes * 1.7)) | 0;
+  // max 3
+  stars = 3 - stars;
   // set stars
   $(place).html('');
-  for ( let i = 0; i < 5; i++) {
+  for ( let i = 0; i < 3; i++) {
     if (stars > 0) {
       stars--;
       star = $('<i class="fas fa-star"></i>');
@@ -471,4 +470,33 @@ const ovations = () => {
   setTimeout(function() {
     throwHat();
   }, (Math.random() * 300) | 0);
+};
+
+// TODO: victory
+const win = () => {
+  const again = $('<div class="win"></div>');
+  const inside = $('<div class="again"></div>)');
+  const btn = $('<button class="btn-again"> AGAIN ! </button>');
+
+  $(inside).append($('<p>YOU WON !!</p>'));
+  $(inside).append($('<p>Your result: <strong class="stars"></strong></p>'));
+  $(inside).append($('<p></p>').text('Your moves: ' + cards.moves ));
+  $(inside).append($('<p></p>').text('Your time: ' + $('#time').text()));
+  $(inside).append(btn);
+
+  $(btn).click(function() {
+    $('.container')[0].style.filter = '';
+    restart();
+    $(again).remove();
+  });
+
+  again.append(inside);
+
+  $('.container')[0].style.filter = 'blur(2px)';
+
+  $('body').append(again);
+
+  // show stars
+  calcStars();
+
 };
